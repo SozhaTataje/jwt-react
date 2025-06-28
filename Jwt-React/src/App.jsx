@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
-import Login from './Components/login'
-import Dashboard from './components/Dashboard'
-import EmpleadosList from './components/empleados/EmpleadosList'
+import Login from './Components/login';
 import EmpleadosForm from './components/empleados/EmpleadosForm'
+import EmpleadosList from './components/empleados/EmpleadosList'
 import TareasList from './Components/tareas/TareasList'
 import TareasForm from './components/tareas/TareasForm'
+import Dashboard from './Components/Dashboard'
 import HorariosList from './components/horarios/HorariosList'
 import HorariosForm from './components/horarios/HorariosForm'
 import Navbar from './Components/navbar'
@@ -13,21 +13,21 @@ import './App.css'
 
 function ProtectedRoute({ children, allowedRoles = [] }) {
   const { user, isAuthenticated } = useAuth()
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />
   }
-  
+
   if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {
     return <div className="error">No tienes permisos para acceder a esta página</div>
   }
-  
+
   return children
 }
 
 function AppContent() {
   const { isAuthenticated } = useAuth()
-  
+
   return (
     <div className="App">
       {isAuthenticated && <Navbar />}
@@ -39,7 +39,7 @@ function AppContent() {
               <Dashboard />
             </ProtectedRoute>
           } />
-          
+
           {/* Rutas de Empleados */}
           <Route path="/empleados" element={
             <ProtectedRoute allowedRoles={['ADMIN', 'COORDINADOR', 'SECRETARIO']}>
@@ -56,7 +56,7 @@ function AppContent() {
               <EmpleadosForm />
             </ProtectedRoute>
           } />
-          
+
           {/* Rutas de Tareas */}
           <Route path="/tareas" element={
             <ProtectedRoute allowedRoles={['ADMIN', 'COORDINADOR', 'SECRETARIO']}>
@@ -73,7 +73,7 @@ function AppContent() {
               <TareasForm />
             </ProtectedRoute>
           } />
-          
+
           {/* Rutas de Horarios */}
           <Route path="/horarios" element={
             <ProtectedRoute allowedRoles={['ADMIN', 'COORDINADOR', 'SECRETARIO']}>
