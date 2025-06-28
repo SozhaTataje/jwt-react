@@ -1,14 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import {
-  Users,
-  CheckSquare,
-  Clock,
-  Home,
-  LogOut,
-  Menu,
-  X,
-} from 'lucide-react'
+import { Users, CheckSquare, Clock, Home, LogOut, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 function Navbar() {
@@ -21,115 +13,92 @@ function Navbar() {
     navigate('/login')
   }
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
-
   return (
-    <nav className="bg-purple-600 text-white shadow-md">
+    <nav className="bg-purple-700 text-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-xl font-semibold">
+        <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
           <Home size={24} />
-          <span>Gestión CRUD</span>
+          Gestión CRUD
         </Link>
 
         <button
-          onClick={toggleMobileMenu}
-          className="lg:hidden text-white focus:outline-none"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden"
         >
           {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
         <div className="hidden lg:flex items-center gap-6">
+          {/* Menú según rol */}
           {user?.role === 'ADMIN' && (
             <>
-              <Link to="/empleados" className="flex items-center gap-1 hover:text-gray-200">
-                <Users size={20} />
-                Empleados
+              <Link to="/empleados" className="hover:text-gray-300 flex items-center gap-1">
+                <Users size={18} /> Empleados
               </Link>
-              <Link to="/tareas" className="flex items-center gap-1 hover:text-gray-200">
-                <CheckSquare size={20} />
-                Tareas
+              <Link to="/tareas" className="hover:text-gray-300 flex items-center gap-1">
+                <CheckSquare size={18} /> Tareas
               </Link>
-              <Link to="/horarios/asignar" className="flex items-center gap-1 hover:text-gray-200">
-                <Clock size={20} />
-                Horarios
+              <Link to="/horarios/asignar" className="hover:text-gray-300 flex items-center gap-1">
+                <Clock size={18} /> Horarios
               </Link>
             </>
           )}
-
           {(user?.role === 'COORDINADOR' || user?.role === 'SECRETARIO') && (
             <>
-              <Link to="/empleados" className="flex items-center gap-1 hover:text-gray-200">
-                <Users size={20} />
-                Ver Empleados
+              <Link to="/empleados" className="hover:text-gray-300 flex items-center gap-1">
+                <Users size={18} /> Ver Empleados
               </Link>
-              <Link to="/horarios" className="flex items-center gap-1 hover:text-gray-200">
-                <Clock size={20} />
-                Ver Horarios
+              <Link to="/horarios" className="hover:text-gray-300 flex items-center gap-1">
+                <Clock size={18} /> Ver Horarios
               </Link>
             </>
           )}
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm">
-              {user?.email} ({user?.role})
-            </span>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1 px-3 py-1 bg-white text-purple-600 rounded hover:bg-gray-100 transition"
-            >
-              <LogOut size={18} />
-              Salir
-            </button>
-          </div>
+          {/* Usuario */}
+          <span className="text-sm">{user?.email} ({user?.role})</span>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1 bg-white text-purple-700 px-3 py-1 rounded hover:bg-gray-100 transition"
+          >
+            <LogOut size={16} /> Salir
+          </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menú mobile */}
       {mobileMenuOpen && (
-        <div className="lg:hidden px-4 pb-4">
+        <div className="lg:hidden bg-purple-600 px-4 pb-4">
           <div className="flex flex-col gap-3">
             {user?.role === 'ADMIN' && (
               <>
                 <Link to="/empleados" className="flex items-center gap-2">
-                  <Users size={20} />
-                  Empleados
+                  <Users size={18} /> Empleados
                 </Link>
                 <Link to="/tareas" className="flex items-center gap-2">
-                  <CheckSquare size={20} />
-                  Tareas
+                  <CheckSquare size={18} /> Tareas
                 </Link>
                 <Link to="/horarios/asignar" className="flex items-center gap-2">
-                  <Clock size={20} />
-                  Horarios
+                  <Clock size={18} /> Horarios
                 </Link>
               </>
             )}
-
             {(user?.role === 'COORDINADOR' || user?.role === 'SECRETARIO') && (
               <>
                 <Link to="/empleados" className="flex items-center gap-2">
-                  <Users size={20} />
-                  Ver Empleados
+                  <Users size={18} /> Ver Empleados
                 </Link>
                 <Link to="/horarios" className="flex items-center gap-2">
-                  <Clock size={20} />
-                  Ver Horarios
+                  <Clock size={18} /> Ver Horarios
                 </Link>
               </>
             )}
-
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-sm">
-                {user?.email} ({user?.role})
-              </span>
+            <div className="mt-4 border-t border-white pt-3 flex justify-between items-center">
+              <span className="text-sm">{user?.email} ({user?.role})</span>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 px-3 py-1 bg-white text-purple-600 rounded hover:bg-gray-100"
+                className="flex items-center gap-1 bg-white text-purple-700 px-3 py-1 rounded hover:bg-gray-100 transition"
               >
-                <LogOut size={18} />
-                Salir
+                <LogOut size={16} /> Salir
               </button>
             </div>
           </div>

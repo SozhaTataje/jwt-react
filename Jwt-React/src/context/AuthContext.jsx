@@ -19,17 +19,22 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      // Decodificar el token para obtener info del usuario
       try {
         const payload = JSON.parse(atob(token.split('.')[1]))
-      
+
+        let userRole = 'ADMIN'
+        if (payload.rol) {
+          userRole = payload.rol.replace('ROLE_', '')
+        }
+
         const userData = {
           email: payload.sub,
-          role:  payload.rol.slice(5) // Por defecto, ya que el JWT no incluye rol en tu implementación
+          role: userRole
         }
-        
-        console.log(userData)
-        console.log(payload)
+
+        console.log('Token payload:', payload)
+        console.log('User data:', userData)
+
         setUser(userData)
         setIsAuthenticated(true)
       } catch (error) {
@@ -47,16 +52,25 @@ export function AuthProvider({ children }) {
 
       localStorage.setItem('token', token)
 
-      // Decodificar token para obtener información del usuario
       const payload = JSON.parse(atob(token.split('.')[1]))
+
+      let userRole = 'ADMIN'
+      if (payload.rol) {
+        userRole = payload.rol.replace('ROLE_', '')
+      }
+
       const userData = {
         email: payload.sub,
-        role: 'ADMIN' // Temporalmente hardcodeado, necesitarías modificar el backend para incluir rol en JWT
+        role: userRole
       }
+
+      console.log('Login successful, payload:', payload)
+      console.log('User data:', userData)
 
       setUser(userData)
       setIsAuthenticated(true)
-      return { success: true }
+
+      return { success: true, rol: userRole }
     } catch (error) {
       console.error('Error en login:', error)
       return {
