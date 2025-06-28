@@ -63,7 +63,7 @@ function TareasList() {
                   </p>
                   <p className="text-sm text-gray-600 flex items-center gap-1">
                     <User size={14} />
-                    Asignado a: {tarea.empleado?.nombre}
+                    Asignado a: {tarea.empleado}
                   </p>
                 </div>
                 {user?.role === 'ADMIN' && (

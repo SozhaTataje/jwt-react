@@ -21,7 +21,7 @@ function EmpleadosList() {
     } catch (error) {
       setError('Error al cargar empleados')
       console.error('Error:', error)
-    } finally {
+    } finally { 
       setLoading(false)
     }
   }

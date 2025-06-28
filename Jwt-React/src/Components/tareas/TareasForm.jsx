@@ -60,7 +60,7 @@ function TareasForm() {
         }
         await api.put(`/tareas/${id}`, tareaData)
       } else {
-        await api.post('/tareas', {
+        await api.post('/tareas/asignar', {
           descripcion: data.descripcion,
           estado: data.estado,
           fecha: data.fecha,

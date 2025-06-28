@@ -22,10 +22,14 @@ export function AuthProvider({ children }) {
       // Decodificar el token para obtener info del usuario
       try {
         const payload = JSON.parse(atob(token.split('.')[1]))
+      
         const userData = {
           email: payload.sub,
-          role: payload.role || 'ADMIN' // Por defecto, ya que el JWT no incluye rol en tu implementación
+          role:  payload.rol.slice(5) // Por defecto, ya que el JWT no incluye rol en tu implementación
         }
+        
+        console.log(userData)
+        console.log(payload)
         setUser(userData)
         setIsAuthenticated(true)
       } catch (error) {
@@ -40,24 +44,24 @@ export function AuthProvider({ children }) {
     try {
       const response = await authService.login(email, password)
       const token = response.data
-      
+
       localStorage.setItem('token', token)
-      
+
       // Decodificar token para obtener información del usuario
       const payload = JSON.parse(atob(token.split('.')[1]))
       const userData = {
         email: payload.sub,
         role: 'ADMIN' // Temporalmente hardcodeado, necesitarías modificar el backend para incluir rol en JWT
       }
-      
+
       setUser(userData)
       setIsAuthenticated(true)
       return { success: true }
     } catch (error) {
       console.error('Error en login:', error)
-      return { 
-        success: false, 
-        message: error.response?.data || 'Error al iniciar sesión' 
+      return {
+        success: false,
+        message: error.response?.data || 'Error al iniciar sesión'
       }
     }
   }
