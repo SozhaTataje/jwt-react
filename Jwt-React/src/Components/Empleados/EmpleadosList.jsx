@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import api from '../../api/axiosInstance'
 import { useAuth } from '../../context/AuthContext'
 import { Users, Plus, Edit, Trash2, Mail, User } from 'lucide-react'
+import Swal from 'sweetalert2'
 
 function EmpleadosList() {
   const [empleados, setEmpleados] = useState([])
@@ -27,12 +28,24 @@ function EmpleadosList() {
   }
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    })
+    if (result.isConfirmed) {
       try {
         await api.get(`/empleados/eliminar/${id}`)
         setEmpleados(empleados.filter(emp => emp.id !== id))
+        Swal.fire('Eliminado', 'El empleado ha sido eliminado.', 'success')
       } catch (error) {
         setError('Error al eliminar empleado')
+        Swal.fire('Error', 'No se pudo eliminar el empleado.', 'error')
         console.error('Error:', error)
       }
     }

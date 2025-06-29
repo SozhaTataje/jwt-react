@@ -31,15 +31,15 @@ function TareasList() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold flex items-center gap-2">
+      <div className="flex justify-center items-center mb-6 gap-8" style={{minHeight:'56px'}}>
+        <h1 className="text-2xl font-bold flex items-center gap-2 m-0">
           <User size={24} />
           Lista de Tareas
         </h1>
         {user?.role === 'ADMIN' && (
           <Link
             to="/tareas/asignar"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
+            className="btn-asignar-tarea"
           >
             <Plus size={16} />
             Asignar Tarea
@@ -48,31 +48,30 @@ function TareasList() {
       </div>
 
       {tareas.length === 0 ? (
-        <p className="text-gray-500">No hay tareas registradas</p>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <p className="text-gray-500 text-center mt-8">No hay tareas registradas</p>
+        </div>
       ) : (
         <div className="grid gap-4">
           {tareas.map((tarea) => (
-            <div key={tarea.id} className="bg-white shadow p-4 rounded border border-gray-200">
+            <div key={tarea.id} className="tarea-card">
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="font-semibold">{tarea.descripcion}</h2>
-                  <p className="text-sm text-gray-600">Estado: <strong>{tarea.estado}</strong></p>
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <Calendar size={14} />
-                    Fecha: {tarea.fecha}
-                  </p>
-                  <p className="text-sm text-gray-600 flex items-center gap-1">
-                    <User size={14} />
-                    Asignado a: {tarea.empleado}
-                  </p>
+                  <h2 className="tarea-title">{tarea.descripcion}</h2>
+                  <div className="tarea-info">
+                    <span className={`tarea-estado ${tarea.estado === 'Pendiente' ? 'pendiente' : 'completada'}`}>{tarea.estado}</span>
+                    <span className="tarea-fecha"><Calendar size={14} /> {tarea.fecha}</span>
+                    <span className="tarea-asignado"><User size={14} /> {tarea.empleado}</span>
+                  </div>
                 </div>
                 {user?.role === 'ADMIN' && (
                   <Link
                     to={`/tareas/editar/${tarea.id}`}
-                    className="text-blue-500 hover:text-blue-700"
+                    className="tarea-editar"
                     title="Editar tarea"
                   >
                     <Edit size={20} />
+                    <span className="tarea-editar-text">Editar</span>
                   </Link>
                 )}
               </div>
