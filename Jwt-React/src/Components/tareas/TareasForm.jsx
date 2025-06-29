@@ -54,11 +54,12 @@ function TareasForm() {
       if (isEdit) {
         const tareaData = {
           descripcion: data.descripcion,
-          estado: data.estado,
+          estado: data.estado,  
           fecha: data.fecha,
-          empleado: { id: data.empleadoId }
+          empleadoid: Number(data.empleadoId)
         }
-        await api.put(`/tareas/${id}`, tareaData)
+        console.log(data)
+        await api.put(`/tareas/editar/${id}`, tareaData)
       } else {
         await api.post('/tareas/asignar', {
           descripcion: data.descripcion,
