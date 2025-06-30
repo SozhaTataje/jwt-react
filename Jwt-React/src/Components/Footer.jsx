@@ -4,7 +4,6 @@ const Footer = () => {
   return (
     <footer className="bg-purple-700 text-white py-4 text-center mt-10">
       <p>© 2025 MiApp. Todos los derechos reservados.</p>
-      <p>Desarrollado por Sozha Tataje Hidalgo</p>
     </footer>
   );
 };

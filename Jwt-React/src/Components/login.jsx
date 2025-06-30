@@ -85,11 +85,6 @@ function Login() {
             {loading ? 'Iniciando sesión...' : 'Ingresar'}
           </button>
         </form>
-
-        <div className="login-footer">
-          <p>Usuarios de prueba:</p>
-          <small>admin@test.com / 123456</small>
-        </div>
       </div>
     </div>
   )
